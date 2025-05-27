@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JudiAware Chatbot</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #chatbox { border: 1px solid #ccc; padding: 10px; width: 100%; max-width: 600px; height: 300px; overflow-y: scroll; }
+    .msg { margin: 5px 0; }
+    .user { color: blue; }
+    .bot { color: green; }
+  </style>
+</head>
+<body>
+  <h2>JudiAware Chatbot</h2>
+  <div id="chatbox"></div>
+  <input type="text" id="userInput" placeholder="Tulis jawaban atau pertanyaan..." />
+  <button onclick="sendMessage()">Kirim</button>
+
+  <script>
+    const chatbox = document.getElementById('chatbox');
+    let moodChecked = false;
+
+    // Tampilkan pesan pembuka otomatis saat pertama kali halaman dibuka
+    window.onload = () => {
+      const pembuka = "🤖 Chatbot ini dirancang untuk mendukung kesehatan mental dan membantu memahami dampak judi online.\nBagaimana kabarmu hari ini?";
+      chatbox.innerHTML += `<div class='msg bot'>${pembuka}</div>`;
+    };
+
+    async function sendMessage() {
+      const input = document.getElementById('userInput');
+      const userText = input.value.trim();
+      if (!userText) return;
+
+      chatbox.innerHTML += `<div class='msg user'>👤 ${userText}</div>`;
+      input.value = '';
+
+      try {
+        let endpoint = '';
+        let body = {};
+
+        const baseURL = 'https://judiaware-backend-h3c4etckdxfzehe7.eastus-01.azurewebsites.net';
+
+if (!moodChecked) {
+  endpoint = `${baseURL}/mood-check`;
+  body = { text: userText };
+} else {
+  endpoint = `${baseURL}/ask`;
+  body = { question: userText };
+}
+
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+
+        const data = await res.json();
+        const answer = data.answer || "Maaf, tidak ada jawaban.";
+        chatbox.innerHTML += `<div class='msg bot'>🤖 ${answer}</div>`;
+
+        // Setelah satu kali mood check, set flag true
+        if (!moodChecked) moodChecked = true;
+
+      } catch (err) {
+        chatbox.innerHTML += `<div class='msg bot'>⚠️ Error: ${err.message}</div>`;
+      }
+
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
+  </script>
+</body>
+</html>
