@@ -40,13 +40,15 @@
         let endpoint = '';
         let body = {};
 
-        if (!moodChecked) {
-          endpoint = 'http://localhost:3000/mood-check';
-          body = { text: userText };
-        } else {
-          endpoint = 'http://localhost:3000/ask';
-          body = { question: userText };
-        }
+        const baseURL = 'https://judiaware-backend-h3c4etckdxfzehe7.eastus-01.azurewebsites.net';
+
+if (!moodChecked) {
+  endpoint = `${baseURL}/mood-check`;
+  body = { text: userText };
+} else {
+  endpoint = `${baseURL}/ask`;
+  body = { question: userText };
+}
 
         const res = await fetch(endpoint, {
           method: 'POST',
