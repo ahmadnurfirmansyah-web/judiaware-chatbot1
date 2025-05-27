@@ -132,4 +132,6 @@ app.post('/ask', async (req, res) => {
 
 
 
-app.listen(port, () => console.log(`✅ Proxy server running at http://localhost:${port}`));
+app.get('/', (req, res) => {
+  res.send("✅ Judiaware backend is running.");
+});
