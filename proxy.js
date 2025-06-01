@@ -48,26 +48,25 @@ app.post('/mood-check', async (req, res) => {
 
     const sentiment = result.documents?.[0]?.sentiment;
     const positiveReplies = [
-  "Senang mendengarnya! Tetap semangat ya 😊 Kamu bisa mulai tanya apa pun soal dampak judi online atau tips menjaga kesehatan mental di sini.",
-  "Wah, kabar yang menyenangkan! Jangan lupa terus jaga mood positifmu! Kamu bisa mulai tanya apa pun soal dampak judi online atau tips menjaga kesehatan mental di sini.",
-  "Mantap! Energi positif itu menular, teruskan ya!",
-  "Kabar bagus! Semoga harimu makin cerah 🌞"
+  "Wah, senang banget dengarnya! Terus jaga semangatmu ya 😊 Ngomong-ngomong, kamu bisa tanya aku soal hal-hal seperti apa itu judi online atau bagaimana cara menghindarinya.",
+  "Asik! Suasana hati yang positif itu bisa menular, teruskan ya 💪 Kalau penasaran soal dampak judi online atau tips menjaga kesehatan mental, tinggal tanya aja ya!",
+  "Kabar bagus! Semoga energi baikmu bikin harimu makin cerah 🌞 Kalau kamu ingin tahu misalnya tanda-tanda seseorang kecanduan judi, aku bisa bantu jawab.",
+  "Senang dengarnya! Kalau kamu ada pertanyaan seputar cara mencegah kecanduan judi atau tempat cari bantuan, silakan tanya ya!"
 ];
 
 const negativeReplies = [
-  "Terima kasih sudah berbagi. Sepertinya kamu sedang tidak baik-baik saja 😔. Coba yuk, lakukan hal positif seperti journaling, berjalan-jalan ringan, atau dengarkan musik santai.",
-  "Aku paham, kadang hari tidak berjalan sesuai harapan. Semangat ya, coba tarik napas dalam dan lakukan hal yang kamu suka.",
-  "Terkadang, merasa sedih itu wajar kok. Kalau mau cerita atau bertanya, aku di sini 😊",
-  "Terima kasih sudah jujur tentang perasaanmu. Ingat, kamu tidak sendiri. Yuk lakukan sesuatu yang menenangkan hati."
+  "Terima kasih sudah cerita. Aku tahu hari-hari berat itu nyata 😔 Kalau kamu ingin tahu misalnya apa dampak buruk dari judi online terhadap mental, aku siap bantu jelaskan.",
+  "Aku ngerti, kadang hari terasa berat. Kamu nggak sendiri kok. Ngomong-ngomong, kamu juga bisa tanya aku soal cara mencegah kecanduan judi atau tempat cari bantuan profesional.",
+  "Perasaan sedih itu wajar banget. Kalau kamu mau cerita atau mau tahu tanda-tanda kecanduan judi, aku di sini buat bantu 😊",
+  "Terima kasih sudah jujur sama perasaanmu. Kalau kamu penasaran soal kenapa judi online bisa bikin kecanduan, aku bisa bantu jawab kok."
 ];
 
 const neutralReplies = [
-  "Terima kasih sudah menjawab! Aku di sini kalau kamu ingin bicara atau bertanya seputar kesehatan mental dan dampak judi online.",
-  "Noted, terima kasih. Kalau ada hal yang ingin kamu ceritakan, aku siap mendengar 😊",
-  "Oke, aku siap bantu kalau kamu butuh informasi atau teman ngobrol ya!",
-  "Terima kasih, harapanku harimu tetap berjalan lancar ✨"
+  "Terima kasih sudah berbagi. Kalau kamu ingin tahu lebih dalam tentang apa itu judi online atau dampaknya, aku siap bantu jawab 😊",
+  "Oke noted ya. Kalau kamu mau tanya soal bagaimana cara mencegah kecanduan judi atau cari bantuan, langsung aja tanya ke aku ya.",
+  "Makasih sudah jawab. Kalau ada pertanyaan soal efek judi online terhadap kesehatan mental atau hal lainnya, aku siap bantu 🙌",
+  "Kalau nanti kamu ingin tahu soal tanda-tanda kecanduan judi atau ingin cari tempat minta bantuan, aku bisa bantu cari infonya."
 ];
-
 
     function getRandomReply(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -86,7 +85,7 @@ if (sentiment === 'positive') {
 
 
     res.json({
-      opening: "Chatbot ini dirancang untuk mendukung kesehatan mental dan membantu memahami dampak judi online. Bagaimana kabarmu hari ini?",
+      opening: "Chatbot ini dirancang untuk membantumu memantau suasana hati dan memahami dampak dari kecanduan judi online terhadap kesehatan mental. Bagaimana perasaanmu hari ini?",
       sentiment,
       answer: reply,
       status: "mood-checked"
