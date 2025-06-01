@@ -1,101 +1,114 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>JudiAware Chatbot</title>
+  <meta name="dicoding:email" content="ahmadnurfirmansyah8@gmail.com">
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f0f2f5;
-      margin: 0;
-      padding: 0;
+      background-color: #f0f4f8;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       height: 100vh;
+      margin: 0;
     }
 
-    header {
+    .chat-container {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-header {
       background-color: #4CAF50;
       color: white;
       padding: 15px;
+      font-size: 1.2rem;
       text-align: center;
-      font-size: 1.2em;
-      font-weight: bold;
     }
 
     #chatbox {
-      flex: 1;
-      padding: 20px;
+      padding: 15px;
+      height: 400px;
       overflow-y: auto;
-      background-color: #ffffff;
-      box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background-color: #fefefe;
     }
 
     .msg {
-      margin: 10px 0;
       max-width: 80%;
       padding: 10px 15px;
-      border-radius: 20px;
-      display: inline-block;
-      line-height: 1.4em;
-      word-wrap: break-word;
+      border-radius: 15px;
+      line-height: 1.4;
+      font-size: 0.95rem;
+      white-space: pre-wrap;
     }
 
     .user {
-      background-color: #d1e7dd;
-      color: #0f5132;
       align-self: flex-end;
-      float: right;
-      clear: both;
+      background-color: #d0ebff;
+      color: #034078;
+      border-top-right-radius: 0;
     }
 
     .bot {
-      background-color: #e2e3e5;
-      color: #41464b;
-      float: left;
-      clear: both;
+      align-self: flex-start;
+      background-color: #e0f7e9;
+      color: #1b5e20;
+      border-top-left-radius: 0;
     }
 
-    #inputArea {
+    .chat-input {
       display: flex;
       padding: 10px;
+      border-top: 1px solid #ddd;
       background-color: #fff;
-      border-top: 1px solid #ccc;
     }
 
-    #userInput {
+    .chat-input input {
       flex: 1;
       padding: 10px;
-      font-size: 1em;
       border: 1px solid #ccc;
       border-radius: 20px;
+      font-size: 1rem;
       outline: none;
     }
 
-    button {
+    .chat-input button {
       margin-left: 10px;
-      padding: 10px 20px;
-      font-size: 1em;
       background-color: #4CAF50;
       color: white;
       border: none;
       border-radius: 20px;
+      padding: 10px 20px;
       cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
     }
 
-    button:hover {
+    .chat-input button:hover {
       background-color: #45a049;
     }
   </style>
 </head>
 <body>
-  <header>🤖 JudiAware - Monitoring Mood & Dukungan Mental<header>
-  <div id="chatbox"></div>
-
-  <div id="inputArea">
-    <input type="text" id="userInput" placeholder="Tulis perasaanmu atau pertanyaan..." />
-    <button onclick="sendMessage()">Kirim</button>
+  <div class="chat-container">
+    <div class="chat-header">🧠 JudiAware Chatbot</div>
+    <div id="chatbox"></div>
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Tulis pertanyaan atau jawaban kamu..." />
+      <button onclick="sendMessage()">Kirim</button>
+    </div>
   </div>
 
   <script>
@@ -104,39 +117,31 @@
 
     // Tampilkan pesan pembuka otomatis saat pertama kali halaman dibuka
     window.onload = () => {
-      const pembuka = "Halo! Aku adalah Chatbot JudiAware. Aku bisa membantumu memantau suasana hati dan memberikan tips sederhana.\nBagaimana kabarmu hari ini?";
-      addMessage(pembuka, "bot");
+      const pembuka = "🤖 Chatbot ini dirancang untuk mendukung kesehatan mental dan membantu memahami dampak judi online.\nBagaimana kabarmu hari ini?";
+      chatbox.innerHTML += `<div class='msg bot'>${pembuka}</div>`;
     };
-
-    function addMessage(message, sender) {
-      const msgDiv = document.createElement('div');
-      msgDiv.className = `msg ${sender}`;
-      msgDiv.innerText = message;
-      chatbox.appendChild(msgDiv);
-      chatbox.scrollTop = chatbox.scrollHeight;
-    }
 
     async function sendMessage() {
       const input = document.getElementById('userInput');
       const userText = input.value.trim();
       if (!userText) return;
 
-      addMessage("👤 " + userText, "user");
+      chatbox.innerHTML += `<div class='msg user'>👤 ${userText}</div>`;
       input.value = '';
 
       try {
         let endpoint = '';
         let body = {};
-
         const baseURL = 'https://judiaware-backend-h3c4etckdxfzehe7.eastus-01.azurewebsites.net';
 
-if (!moodChecked) {
-  endpoint = `${baseURL}/mood-check`;
-  body = { text: userText };
-} else {
-  endpoint = `${baseURL}/ask`;
-  body = { question: userText };
-}
+        if (!moodChecked) {
+          endpoint = `${baseURL}/mood-check`;
+          body = { text: userText };
+        } else {
+          endpoint = `${baseURL}/ask`;
+          body = { question: userText };
+        }
+
         const res = await fetch(endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -144,15 +149,16 @@ if (!moodChecked) {
         });
 
         const data = await res.json();
-        const answer = data.answer || "Maaf, belum ada jawaban.";
-        addMessage("🤖 " + answer, "bot");
+        const answer = data.answer || "Maaf, tidak ada jawaban.";
+        chatbox.innerHTML += `<div class='msg bot'>🤖 ${answer}</div>`;
 
-        // Setelah satu kali mood check, set flag true
-       if (!moodChecked) moodChecked = true;
+        if (!moodChecked) moodChecked = true;
 
       } catch (err) {
-        addMessage("⚠️ Terjadi kesalahan: " + err.message, "bot");
+        chatbox.innerHTML += `<div class='msg bot'>⚠️ Error: ${err.message}</div>`;
       }
+
+      chatbox.scrollTop = chatbox.scrollHeight;
     }
   </script>
 </body>
